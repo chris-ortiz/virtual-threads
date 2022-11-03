@@ -6,9 +6,10 @@ import java.util.concurrent.CountDownLatch;
 public class B_VirtualThreads {
     public static void main(String[] args) throws InterruptedException {
         var random = new Random();
-        var countDownLatch = new CountDownLatch(100_000);
+        var threadCount = 500_000;
+        var countDownLatch = new CountDownLatch(threadCount);
 
-        for (int i = 0; i < 500_000; i++) {
+        for (int i = 0; i < threadCount; i++) {
             Thread.ofVirtual().start(() -> {
                 System.out.println(random.nextInt());
                 countDownLatch.countDown();

@@ -11,15 +11,15 @@ public class C_VirtualThreads {
         try (var executorService = Executors.newVirtualThreadPerTaskExecutor()) {
             var random = new Random();
 
-            var future = executorService.submit(() -> random.nextInt());
-
-            System.out.println(future.get());
-
+//            var future = executorService.submit(() -> random.nextInt());
 //
-//            var fromCompletableFuture = CompletableFuture
-//                    .supplyAsync(() -> random.nextInt(), executorService).get();
-//
-//            System.out.println(fromCompletableFuture);
+//            System.out.println(future.get());
+
+
+            var fromCompletableFuture = CompletableFuture
+                    .supplyAsync(random::nextInt, executorService).get();
+
+            System.out.println(fromCompletableFuture);
 
         }
 
