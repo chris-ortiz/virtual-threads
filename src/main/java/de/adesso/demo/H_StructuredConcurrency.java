@@ -4,14 +4,13 @@ import jdk.incubator.concurrent.StructuredTaskScope;
 
 import java.util.concurrent.ExecutionException;
 
-public class G_StructuredConcurrency {
-    public static void main(String[] args) throws InterruptedException {
-
-        try (var scope = new StructuredTaskScope<Void>()) {
-            var failingTask = scope.fork(() -> {
+public class H_StructuredConcurrency {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+        try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
+            scope.fork(() -> {
                 Thread.sleep(100);
                 System.out.println("World");
-                throw new RuntimeException("Test");
+                return null;
             });
 
             scope.fork(() -> {
@@ -20,6 +19,7 @@ public class G_StructuredConcurrency {
             });
 
             scope.join();           // Join both forks
+            scope.throwIfFailed();  // ... and propagate errors
         }
     }
 }
